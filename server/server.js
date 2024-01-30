@@ -3,22 +3,30 @@ const dao = require("./mongo-dao.js");
 const app = express();
 
 app.use(express.json()); //Parse JSON body
-/*
-app.get("/api/characters", function (req, res) {
-  let character = dao.findAllCharacters(req.body);
 
-  if (character === undefined) {
-    res.statusCode = 404;
-    res.end();
-  } else {
-    res.send(character);
-  }
-});*/
+// get all characters
+app.get("/api/characters", (req, res) => {
+    dao.findAllCharacters(
+        (characters) => {
+            if (!characters) {
+                res.status(404).end();
+            } else {
+                res.send(characters);
+            }
+        })
+});
 
-app.get("/books", (req, res) => {
-  dao.findAllCharacters(function (data) {
-    res.send(data);
-  });
+//get one character
+app.get("/api/characters/:id", (req, res) => {
+    const idNum = Number(req.params.id);
+    dao.findCharacter(idNum,
+        (character) => {
+            if (!character) {
+                res.status(404).end();
+            } else {
+                res.send(character);
+            }
+        })
 });
 
 app.listen(3000, () => console.log("Example app listening on port 3000!"));
