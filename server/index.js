@@ -5,6 +5,11 @@ const app = express();
 
 app.use(express.json()); //Parse JSON body
 
+app.get("/", (req, res) => res.send("Server is running"));
+app.get("/characters", finders.getCharacters);
+app.get("/characters/:id", finders.getCharacter);
+
+app.listen(3000, () => console.log("Example app listening on port 3000!"));
 /*
 // get all characters
 app.get("/api/characters", (req, res) => {
@@ -32,8 +37,3 @@ app.get("/api/characters/:id", (req, res) => {
 });
 */
 /* =======================SET UP ROUTES HERE ============================ */
-app.get("/", (req, res) => res.send("Server is running"));
-app.get("/characters", finders.getCharacters);
-app.get("/characters/:id", finders.getCharacter);
-
-app.listen(3000, () => console.log("Example app listening on port 3000!"));
