@@ -1,5 +1,12 @@
 function CharacterInfo({character}) {
-  return <div>{character.name}</div>;
+  return (
+    <div>
+      <span>{character.name}</span>
+      <span>{character.gender}</span>
+      <span>{character.homeworld}</span>
+      <span>{character.birth_year}</span>
+    </div>
+  );
 }
 
 export default CharacterInfo;

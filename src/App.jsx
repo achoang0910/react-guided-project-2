@@ -4,7 +4,7 @@ import "./App.css";
 import Character from "./Character.jsx";
 import CharacterInfo from "./CharacterInfo.jsx";
 
-const url = "https://swapi2.azurewebsites.net/api/characters";
+const url = "http://localhost:3000/characters";
 
 function App() {
   const [characters, setCharacters] = useState([]);
