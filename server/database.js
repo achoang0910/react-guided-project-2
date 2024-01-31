@@ -11,16 +11,8 @@ let collection;
 
 async function connectToMongoDB() {
   await client.connect();
-  charactersPromise = client.db().collection("characters");
-  planetsPromise = client.db().collection("planets");
-  filmsPromise = client.db().collection("films");
 }
 
 connectToMongoDB();
 
-module.exports = {
-  client,
-  characters: () => charactersPromise,
-  planets: () => planetsPromise,
-  films: () => filmsPromise,
-};
+module.exports = { client };
