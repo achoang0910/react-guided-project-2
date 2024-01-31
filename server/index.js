@@ -1,5 +1,4 @@
 const express = require("express");
-const dao = require("./mongo-dao.js");
 const finders = require("./finders.js");
 const app = express();
 
