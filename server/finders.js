@@ -107,3 +107,35 @@ module.exports.getFilmCharacters = (req, res) => {
         .send({ alert: `Error getting film with id ${id}` }, err);
     });
 };
+
+// mongodb query to get all characters in a single film (in this case we're searching for film with id 5)
+
+// db['films-characters'
+// ].aggregate([
+//   {
+//   $match: {
+//       "film_id": 5
+//     }
+//   },
+//   {
+//   $lookup: {from: "films", localField: "film_id", foreignField: "id", as: "film_matches"
+//     },
+//   },
+//   {
+//   $lookup: {from: "characters", localField: "character_id", foreignField: "id", as: "character_matches"
+//     },
+//   },
+//   {
+//   $unwind: "$character_matches"
+//   },
+//   {
+//   $replaceRoot: {
+//     newRoot: "$character_matches"
+//     }
+//   },
+//   {
+//   $sort: {
+//     id: 1
+//     }
+//   }
+// ])
