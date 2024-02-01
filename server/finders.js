@@ -7,15 +7,43 @@ const filmCharacters = client.db().collection("films-characters");
 /*==================== FILM - CHARACTERS ====================*/
 module.exports.getFilmCharacters = (req, res) => {
   //let data = filmCharacters.findOne({ "id": Number(req.params.id) });
-  let data = filmCharacters.aggregate({ id: Number(req.params.id) });
+  const filmId = Number(req.params.id);
+  let data = filmCharacters
+    .aggregate([
+      {
+        $match: { film_id: filmId },
+      },
+      {
+        $lookup: {
+          from: "characters",
+          localField: "character_id",
+          foreignField: "id",
+          as: "character_matches",
+        },
+      },
+      {
+        $unwind: "$character_matches",
+      },
+      {
+        $replaceRoot: {
+          newRoot: "$character_matches",
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          id: 1,
+          name: 1,
+        },
+      },
+    ])
+    .toArray();
   data
     .then((data) => {
       res.status(200).send(data);
     })
     .catch((err) => {
-      res
-        .status(501)
-        .send({ alert: `Error getting film with id ${id}` }, err);
+      res.status(501).send({ alert: `Error getting characters of film with id ${filmId}` }, err);
     });
 };
 
@@ -32,7 +60,7 @@ module.exports.getCharacters = (req, res) => {
 };
 
 module.exports.getCharacter = (req, res) => {
-  let data = characters.findOne({ "id": Number(req.params.id) });
+  let data = characters.findOne({ id: Number(req.params.id) });
   data
     .then((data) => {
       res.status(200).send(data);
@@ -57,7 +85,7 @@ module.exports.getPlanets = (req, res) => {
 };
 
 module.exports.getPlanet = (req, res) => {
-  let data = planets.findOne({ "id": Number(req.params.id) });
+  let data = planets.findOne({ id: Number(req.params.id) });
   data
     .then((data) => {
       res.status(200).send(data);
@@ -82,29 +110,13 @@ module.exports.getFilms = (req, res) => {
 };
 
 module.exports.getFilm = (req, res) => {
-  let data = films.findOne({ "id": Number(req.params.id) });
+  let data = films.findOne({ id: Number(req.params.id) });
   data
     .then((data) => {
       res.status(200).send(data);
     })
     .catch((err) => {
-      res
-        .status(501)
-        .send({ alert: `Error getting film with id ${id}` }, err);
-    });
-};
-
-/*==================== FILM - CHARACTERS ====================*/
-module.exports.getFilmCharacters = (req, res) => {
-  let data = films.findOne({ "id": Number(req.params.id) });
-  data
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      res
-        .status(501)
-        .send({ alert: `Error getting film with id ${id}` }, err);
+      res.status(501).send({ alert: `Error getting film with id ${id}` }, err);
     });
 };
 

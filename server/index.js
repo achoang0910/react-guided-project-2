@@ -1,9 +1,10 @@
 const express = require("express");
+const cors = require("cors")
 const finders = require("./finders.js");
 const app = express();
 
 app.use(express.json()); //Parse JSON body
-
+app.use(cors());
 /*==================== SET UP ROUTES HERE ====================*/
 app.get("/", (req, res) => res.send("Server is running"));
 app.get("/characters", finders.getCharacters);
